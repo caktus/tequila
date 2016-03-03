@@ -10,7 +10,15 @@
   roles:
     - common
 
-- hosts: db
+# Other roles should NOT express dependencies on the `common` role.
+# We will always apply it here.
+
+# Each of these plays should include a single, high-level role.
+# If other ansible roles are needed for that high-level role to work, make
+# them dependencies of that ansible role rather than adding it to the play
+# here. That way all the information about what that high-level role needs
+# is in one place, not divided between here and there.
+- hosts: db-master
   roles:
     - db-master
 
@@ -20,7 +28,6 @@
 
 - hosts: web
   roles:
-    - balancer
     - web
 
 - hosts: cache

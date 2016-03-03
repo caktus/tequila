@@ -1,5 +1,5 @@
 ---
-- name: install postgres
+- name: install postgres server
   apt: name={{ item }} state=present
   with_items:
     - postgresql-contrib-{{ pg_version }}
@@ -26,7 +26,7 @@
   notify:
     - reload postgres
 
-- name: configure postgres
+- name: configure postgres server
   template: src="postgresql.conf"
             dest=/etc/postgresql/{{ pg_version }}/main/postgresql.conf
             owner=postgres group=postgres mode=0644

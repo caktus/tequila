@@ -1,3 +1,5 @@
 ---
+# For now, we always use rabbitmq for our queue.
+# TODO: Add support to use Redis as our queue.
 dependencies:
-  - { role: common }
+  - { role: rabbitmq }

@@ -39,11 +39,23 @@ How to use
 
 * Install the tequila package into your virtualenv, e.g.::
 
-    pip install -r requirements.txt
+    $ pip install -r requirements.txt
 
 * In your project's top-level directory (which will be the current directory
   when you run deploys), create an ``inventory`` directory.
-* For each environment (e.g. `staging`, `production`), create a new `Ansible
+
+* For each environment (e.g. `staging`, `production`), run::
+
+    $ deploy --newenv <envname>
+
+  e.g.::
+
+    $ deploy --newenv staging
+    $ deploy --newenv production
+
+  This will set up empty template files for variables, inventory, etc.
+
+* For each environment (e.g. `staging`, `production`), edit the new `Ansible
   inventory file <http://docs.ansible.com/ansible/intro_inventory.html>`_
   in the ``inventory`` directory, named the same as the environment
   (with no extension).  The inventory file is an ``ini``-format file.
@@ -90,9 +102,9 @@ How to use
       ---
       # file: inventory/group_vars/all/vars.yml
       project_name: our_neat_project
-      python_version: 3.4
-      less_version: 2.1.0
-      postgres_version: 9.3
+      python_version: 3.5
+      less_version: 2.5.3
+      postgres_version: 9.4
 
 * Put any variables that should be set for the entire environment in a YAML file
   named ``$(PWD)/inventory/group_vars/<envname>/vars.yml``.  E.g.::
@@ -116,7 +128,7 @@ How to use
   ``$(PWD)/inventory/group_vars/<dirname>/secrets.yml`` and encrypt it using the `Ansible
   vault <http://docs.ansible.com/ansible/playbooks_vault.html>`_, e.g.::
 
-      ansible-vault edit $(PWD)/inventory/group_vars/staging/secrets.yml
+      $ ansible-vault edit $(PWD)/inventory/group_vars/staging/secrets.yml
 
   (This two-step approach to secret variables is an
   `Ansible best practice <http://docs.ansible.com/ansible/playbooks_best_practices.html#variables-and-vaults>`_).
@@ -125,9 +137,9 @@ How to use
   Be *sure* that (1) they do not get added to version control, and (2) they
   are not public (e.g. set permissions to 0600).  E.g.::
 
-      echo ".vaultpassword*" >>.gitignore
-      echo "password" >.vaultpassword-staging
-      chmod 600 .vaultpassword-staging
+      $ echo ".vaultpassword*" >>.gitignore
+      $ echo "password" >.vaultpassword-staging
+      $ chmod 600 .vaultpassword-staging
 
 * TODO: Add instructions here for the FIRST deploy. It might need to run
   as root or ubuntu or whatever the initial user the server has set up
@@ -135,11 +147,11 @@ How to use
 
 * Run ``deploy <envname>`` to update servers.  E.g.::
 
-    deploy staging
+    $ deploy staging
 
   or::
 
-    deploy production
+    $ deploy production
 
 Where to set variables
 ----------------------
@@ -163,6 +175,11 @@ common practices for our projects:
     ---
     # file: inventory/group_vars/all/vars.yml
     project_name: our_project
+    python_version: 3.4
+    ansible_sudo: true
+    users:
+      - { name: 'vagrant', public_key: [] }
+      - { name: 'devuser1', public_key: ['ssh-rsa longkeystring== devuser1@example.com'] }
 
 * Variables that apply to all servers in an environment go in
   ``inventory/group_vars/<envname>/vars.yml`` and
@@ -208,3 +225,5 @@ TODO: add hstore & postgis
 
 TODO: document that setting source_is_local True will sync the project
 files from the current directory instead of pulling them from git.
+
+TODO: document how to set up developer users

@@ -63,7 +63,7 @@ So, what do we need to do to make tequila installable using
 with all of the directory structure for the role exposed at the top
 level, i.e.
 
-..
+::
 
     myrole-repo/
         defaults/
@@ -120,7 +120,7 @@ Secrets
 Use Ansible Vault.  But how to share the secret to decrypt the Vault
 files?
 
-..
+::
 
     group_vars/
         prod/
@@ -169,7 +169,7 @@ project, it is sufficient to have a set of directories named according
 to convention that will contain needed configuration variables.  A
 likely possibility is
 
-..
+::
 
     django-project-template/
         inventory/

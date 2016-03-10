@@ -116,10 +116,20 @@ in-place to include the repo for the role at the head of the
 Secrets
 -------
 
-.. FIXME
+"Infrastructure as Code".
 
-Use Ansible Vault.  But how to share the secret to decrypt the Vault
-files?
+You shouldn't commit secrets to the repo, but you need them in order
+to provision servers.
+
+To solve this problem, the Ansible community has settled upon the use
+of Ansible Vault, a symmetric encryption scheme exposed through the
+ansible command-line client.  But this just begs the question of how
+to share the key to decrypt the Vault files amongst the developers who
+need it.  We could share this key via "sneakernet" or on the private
+intranet, but a more convenient and secure method may be to use a
+shared password in LastPass.  The Ansible Vault password file can be
+executable, so we could write code using of one of the LastPass API
+libraries to fetch the key.
 
 ::
 
@@ -147,15 +157,31 @@ in ``secrets.yml``:
     postgres_port: 5432
 
 
-The Ansible Vault password file can be executable.
+Also, in tasks, make sure to set ``no_log: true`` so that the secrets
+don't get echoed to the console when the verbosity is turned up.
+
+.. code-block:: yaml
+
+    - name: VPN Server | Load VPN secret keys
+      include_vars: "vpn-secrets.yml"
+      no_log: true
+
+
+For ease of use, we could do away with the secret/non-secret file
+split for the dev environment.
 
 Checked-in files, even encrypted ones, can still be compromised.  Do
 we *really* want to use Ansible Vault?
 
+Possible options:
+
 - shared password in LastPass
 - keep on the intranet (either vault files or keys for files)
+- HashiCorp's Vault
 - consul
 - KeePassX
+
+Sources:
 
 - http://www.slideshare.net/excellaco/using-ansible-vault-to-protect-your-secrets
 

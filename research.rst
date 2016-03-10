@@ -6,7 +6,7 @@ New Projects
 
 Creation of new projects would be done using django-project-template,
 just as we currently do for margarita.  Versions of the project
-template which use tequila would have tequila-specific fabric scripts,
+template which use tequila would have tequila-specific scripts,
 providing simplified wrappers with an interface mostly familiar to
 current users around the necessary ansible-playbook commands.  There
 would also be some mild changes to the project structure, i.e. the
@@ -33,8 +33,8 @@ of roles, we should do so as well.
 
 The pros:
 
-- roles can be installed by pointing to a repo, instead of publishing
-  to the Ansible Galaxy site
+- roles can also be installed by pointing to a repo, instead of
+  publishing to the Ansible Galaxy site
 - particular versions of roles can be pinned
 - roles can be installed using a file similar to a pip requirements
   file
@@ -85,31 +85,32 @@ My recommendation is to move each individual role out into its own
 repo, with the naming scheme ``tequila-<rolename>``.  Each role repo
 would get a tagged release number when changes land in master.
 
-.. FIXME
-
 What is the point of the tequila repo, then?
 
-People would still be free, however, to directly install individual
-tequila roles using ``ansible-galaxy``.  We may even wish to do this
-for infrequently used roles that are only relevant for some projects.
+The tequila repo, then, would be a pip-installable central
+clearinghouse for these roles.  It would also get one overall tagged
+release number tying together the release numbers for all of the
+individual roles.  It could also ship with an installation script that
+would call ``ansible-galaxy`` for all of the tequila sub-repo versions
+relevant for the current tequila release.
 
-.. FIXME
+People would still be free, however, to install individual tequila
+roles by directly using ``ansible-galaxy``.  We may even wish to do
+this for infrequently used roles that are only relevant for some
+projects.
 
-How can we try out new versions of tequila roles before they are
-released?
+The remaining question is how to deal with development of the tequila
+roles themselves.  How can developers try them out before release?
+For installing feature branches, it should be sufficient to use the
+branch name as the version in the ``ansible-galaxy`` command.  For
+iterative development, we can edit the project's ``ansible.cfg``
+in-place to include the repo for the role at the head of the
+``roles_path`` variable.
 
-- branch name as the version in the ``ansible-galaxy`` command
-- edit ``ansible.cfg`` in-place to include the repo for the role
+.. FIXME: What scripts ship with tequila?
 
-
-
-.. FIXME
-
-The caktus/tequila repo, then, would be a pip-installable central
-clearinghouse for these roles.  It would also get a tagged release
-number, and would have an installation script that would call
-``ansible-galaxy`` for all of the tequila sub-repo versions relevant
-for the current tequila release.
+.. FIXME: What is the relationship between pip installing tequila and
+   ansible-galaxy installing tequila roles?
 
 
 Secrets

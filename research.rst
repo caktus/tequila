@@ -1,6 +1,13 @@
 Tequila
 =======
 
+What is Tequila?
+
+- it's a collection of Ansible roles
+- it's a wrapper script providing a simplified interface for the
+  ``ansible`` command-line program
+
+
 New Projects
 ------------
 
@@ -112,6 +119,20 @@ in-place to include the repo for the role at the head of the
 .. FIXME: What is the relationship between pip installing tequila and
    ansible-galaxy installing tequila roles?
 
+.. FIXME: pip install [-U] tequila
+          -> tequila install
+            -> ansible-galaxy install -r ???
+
+.. FIXME: can a setuptools bin script be automatically executed during
+   an install?
+
+.. FIXME: should the ansible-galaxy requirements.yml file be kept in
+   the virtualenv, or should it somehow be exported into the project
+   directory?
+
+.. FIXME: what is responsible for creating/updating the ansible-galaxy
+   requirements.yml file?
+
 
 Secrets
 -------
@@ -221,6 +242,13 @@ the main playbook using the ``include`` directive.
 
 Dynamic Inventory Management
 ----------------------------
+
+As with the password file, Ansible will accept a script for its
+inventory file.  This opens up the possibility of having a *dynamic*
+inventory.  Ansible itself ships with a few working examples,
+including scripts for AWS EC2 and OpenStack.
+
+.. FIXME: Needs more here.
 
 
 Conversion From Margarita

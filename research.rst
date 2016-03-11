@@ -12,17 +12,17 @@ New Projects
 ------------
 
 Creation of new projects would be done using django-project-template,
-just as we currently do for margarita.  Versions of the project
-template which use tequila would have tequila-specific scripts,
-providing simplified wrappers with an interface mostly familiar to
-current users around the necessary ansible-playbook commands.  There
+just as we currently do for margarita.  Installing tequila would make
+available the ``tequila`` command, providing a simplified interface
+for ``ansible-playbook`` (and friends) that will be mostly familiar to
+current users of the django-project-template fabric scripts.  There
 would also be some mild changes to the project structure, i.e. the
 location of the project-specific variables and custom playbooks, since
 these would be kept distinct from paths where they might conflict with
 the equivalent Salt files.
 
 Much of this work has already been started, and is currently on the
-use_tequila branch.
+``use_tequila`` branch.
 
 
 Installation
@@ -114,24 +114,16 @@ iterative development, we can edit the project's ``ansible.cfg``
 in-place to include the repo for the role at the head of the
 ``roles_path`` variable.
 
-.. FIXME: What scripts ship with tequila?
-
-.. FIXME: What is the relationship between pip installing tequila and
-   ansible-galaxy installing tequila roles?
-
 .. FIXME: pip install [-U] tequila
           -> tequila install
             -> ansible-galaxy install -r ???
 
-.. FIXME: can a setuptools bin script be automatically executed during
-   an install?
+.. FIXME: can (and should) a setuptools bin script be automatically
+   executed during an install?
 
 .. FIXME: should the ansible-galaxy requirements.yml file be kept in
    the virtualenv, or should it somehow be exported into the project
    directory?
-
-.. FIXME: what is responsible for creating/updating the ansible-galaxy
-   requirements.yml file?
 
 
 Secrets
@@ -151,6 +143,13 @@ intranet, but a more convenient and secure method may be to use a
 shared password in LastPass.  The Ansible Vault password file can be
 executable, so we could write code using of one of the LastPass API
 libraries to fetch the key.
+
+So, how should we make use of Ansible Vault-encrypted files?
+It isn't possible to use Vault only on lines or sections, it has to be
+whole files.  So it's recommended to split out only those variables
+that need to be secret into their own files, to minimize the opaque
+binary blobs that get checked into the repo.  The structure would look
+something like this,
 
 ::
 
@@ -178,8 +177,9 @@ in ``secrets.yml``:
     postgres_port: 5432
 
 
-Also, in tasks, make sure to set ``no_log: true`` so that the secrets
-don't get echoed to the console when the verbosity is turned up.
+Also, in the playbook and role tasks, make sure to set ``no_log:
+true`` so that the secrets don't get echoed to the console when the
+verbosity is turned up.
 
 .. code-block:: yaml
 
@@ -191,12 +191,8 @@ don't get echoed to the console when the verbosity is turned up.
 For ease of use, we could do away with the secret/non-secret file
 split for the dev environment.
 
-Checked-in files, even encrypted ones, can still be compromised.  Do
-we *really* want to use Ansible Vault?
+Other possible options for sharing the Vault key:
 
-Possible options:
-
-- shared password in LastPass
 - keep on the intranet (either vault files or keys for files)
 - HashiCorp's Vault
 - consul
@@ -232,7 +228,7 @@ recommended secrets-vs-non-secrets structure.
 The ``ansible.cfg`` that ships with the project will need to define
 the inventory location.
 
-Since the relevant playbook for a project will ship inside that
+Since the relevant playbook(s) for a project will ship inside that
 project, customized tasks can be added directly in that file.  If
 there are sufficient numbers of these tasks for it to be desirable,
 additional playbooks can be constructed and put in a conventional
@@ -261,14 +257,13 @@ Needed:
   of django-project-template
 - skeletons of project-specific Ansible variables files
 - convert existing knowledge about servers into inventory files?
-- tequila-specific commands
 - default ``ansible.cfg``
 - default tequila roles ``requirements.yml`` file
 - default playbooks
-- updates to README.rst?
+- removal of Salt-specific files (``fabfile.py``, ``install_salt.sh``)
 - checklist for things that should be manually converted
-  (project-specific Salt states, removal of fabfiles, etc.)
+  (project-specific Salt states, updating ``README.rst``, etc.)
 
 
-The main tequila repo could ship with a script that could make these
-changes.
+The main tequila repo could ship with a command (``tequila convert``?)
+that could make these changes.

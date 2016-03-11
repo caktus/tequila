@@ -7,6 +7,9 @@ What is Tequila?
 - it's a wrapper script providing a simplified interface for the
   ``ansible`` command-line program
 
+.. FIXME: have an explicit breakdown of the files and structure in
+   both tequila and dpt
+
 
 New Projects
 ------------
@@ -32,38 +35,43 @@ We need to have the ability to pin projects to particular versions of
 tequila.  It is also desirable to have an easy command to install or
 upgrade tequila, along the lines of ``pip install``.
 
+Under all of the proposals that follow, I recommend that Tequila be
+pip installable.  The work for this has already been done.
+
+
+Proposal 1: ``tequila roles`` command puts the roles in the right place
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Under this proposal, no changes to the structure of the Tequila
+repository need to happen.  Running the ``tequila roles`` command
+would symlink or copy the ``tequila/roles`` directory up to the
+current working directory (which under most scenarios would be the
+project directory), and this would generally not need to be run more
+than once per local setup.
+
+For development of the roles themselves, one could ``pip install -e
+<local_tequila_copy>``, and the in-progress versions of the roles
+would easily be made available for the ansible commands.
+
+The pros:
+
+- no changes to our Tequila repo structure
+- could still run plain versions of ``ansible-playbook``
+
+The cons:
+
+- our roles would not be easily usable by members of the Ansible
+  community
+
+
+Proposal 2: separate ``tequila-<rolename>`` repos
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 If we retain Tequila as an open-sourced project, we should conform to
 the conventions of the Ansible community to the best of our ability.
 Since the Ansible community uses Ansible Galaxy (think: PyPI) and the
 ``ansible-galaxy`` command (think: pip) for packaging and distribution
 of roles, we should do so as well.
-
-The pros:
-
-- roles can also be installed by pointing to a repo, instead of
-  publishing to the Ansible Galaxy site
-- particular versions of roles can be pinned
-- roles can be installed using a file similar to a pip requirements
-  file
-- use of the ``ansible-galaxy`` command would allow installed tequila
-  roles to live side-by-side with installed roles from the community
-- conforming to community standards would allow our roles to be used
-  in contexts outside of the django-project-template by other members
-  of the community, using Ansible's standard tools
-
-The cons:
-
-- ``ansible-galaxy`` is very particular about the directory structure
-  of roles that it can install
-- due to that structure, there is a limit of one role per repo or
-  "package"
-
-
-For ease of installation, projects will have to ship with an
-ansible-galaxy requirements file, and an ``ansible.cfg`` file
-specifying a ``roles_path`` within the project's directory structure
-(e.g. ``roles/``).  Example versions of these will need to be included
-in django-project-template.
 
 So, what do we need to do to make tequila installable using
 ``ansible-galaxy``?  Roles are limited to one per repo or package,
@@ -83,23 +91,50 @@ level, i.e.
         vars/
 
 
-Tequila both fails to have the structure necessary for the
-installation process to complete without errors, and also has
-additional layers of directories, preventing roles from being
+Tequila, as it currently stands, both fails to have the structure
+necessary for the installation process to complete without errors, and
+also has additional layers of directories, preventing roles from being
 correctly included from within playbooks.
 
-My recommendation is to move each individual role out into its own
-repo, with the naming scheme ``tequila-<rolename>``.  Each role repo
-would get a tagged release number when changes land in master.
+With this proposal, we would move each individual role out into its
+own repo, with the naming scheme ``tequila-<rolename>``.  Each role
+repo would get a tagged release number when changes land in master.
+
+The pros:
+
+- we would not need to commit to publishing to the Ansible Galaxy
+  site, since roles can also be installed by pointing to a repo
+- particular versions of roles can be pinned
+- roles can be installed using a ``requirements.yml`` file similar to
+  a pip requirements file
+- use of the ``ansible-galaxy`` command would allow installed tequila
+  roles to live side-by-side with installed roles from the community
+- conforming to community standards would allow our roles to be used
+  in contexts outside of the django-project-template by other members
+  of the community, using Ansible's standard tools
+
+The cons:
+
+- ``ansible-galaxy`` is very particular about the directory structure
+  of roles that it can install
+- due to that structure, there is a limit of one role per repo or
+  "package"
+- management of versions of all of these repos
+
+For ease of installation, projects will have to ship with an
+ansible-galaxy requirements file, and an ``ansible.cfg`` file
+specifying a ``roles_path`` within the project's directory structure
+(e.g. ``roles/``).  Example versions of these will need to be included
+in django-project-template.
 
 What is the point of the tequila repo, then?
 
 The tequila repo, then, would be a pip-installable central
 clearinghouse for these roles.  It would also get one overall tagged
 release number tying together the release numbers for all of the
-individual roles.  It could also ship with an installation script that
-would call ``ansible-galaxy`` for all of the tequila sub-repo versions
-relevant for the current tequila release.
+individual roles.  It could also ship with an installation script
+(``tequila roles``) that would call ``ansible-galaxy`` for all of the
+tequila sub-repo versions relevant for the current tequila release.
 
 People would still be free, however, to install individual tequila
 roles by directly using ``ansible-galaxy``.  We may even wish to do
@@ -114,16 +149,26 @@ iterative development, we can edit the project's ``ansible.cfg``
 in-place to include the repo for the role at the head of the
 ``roles_path`` variable.
 
-.. FIXME: pip install [-U] tequila
-          -> tequila install
-            -> ansible-galaxy install -r ???
 
-.. FIXME: can (and should) a setuptools bin script be automatically
-   executed during an install?
+Proposal 3: all commands must be ``tequila ...`` commands
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. FIXME: should the ansible-galaxy requirements.yml file be kept in
-   the virtualenv, or should it somehow be exported into the project
-   directory?
+This is how the current version of Tequila works.
+
+The ``tequila`` command sets an environment variable for the roles
+path, pointing to the ``tequila/roles`` directory wherever pip
+installed it.
+
+The pros:
+
+- we don't have to worry about a ``roles/`` directory inside our
+  project directory
+
+The cons:
+
+- no longer easily able to use Ansible commands directly
+- our roles are even less usable to the larger community than under
+  Proposal 1
 
 
 Secrets
@@ -256,7 +301,8 @@ Needed:
 - create the directory structure used by the tequila-specific portions
   of django-project-template
 - skeletons of project-specific Ansible variables files
-- convert existing knowledge about servers into inventory files?
+- parse and inject pillar data into the Ansible vars files
+- convert Salt grain info into inventory files
 - default ``ansible.cfg``
 - default tequila roles ``requirements.yml`` file
 - default playbooks

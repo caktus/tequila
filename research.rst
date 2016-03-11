@@ -7,9 +7,6 @@ What is Tequila?
 - it's a wrapper script providing a simplified interface for the
   ``ansible`` command-line program
 
-.. FIXME: have an explicit breakdown of the files and structure in
-   both tequila and dpt
-
 
 New Projects
 ------------
@@ -303,13 +300,16 @@ Needed:
 - skeletons of project-specific Ansible variables files
 - parse and inject pillar data into the Ansible vars files
 - convert Salt grain info into inventory files
-- default ``ansible.cfg``
-- default tequila roles ``requirements.yml`` file
 - default playbooks
 - removal of Salt-specific files (``fabfile.py``, ``install_salt.sh``)
 - checklist for things that should be manually converted
   (project-specific Salt states, updating ``README.rst``, etc.)
 
+Only with Installation Proposal 2:
 
-The main tequila repo could ship with a command (``tequila convert``?)
-that could make these changes.
+- default ``ansible.cfg``
+- default tequila roles ``requirements.yml`` file
+
+
+The main tequila repo could ship with a command (``tequila convert``)
+that may be able to make these changes for us.

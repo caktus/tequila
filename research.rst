@@ -22,7 +22,7 @@ these would be kept distinct from paths where they might conflict with
 the equivalent Salt files.
 
 Much of this work has already been started, and is currently on the
-``use_tequila`` branch.
+``use_tequila`` branch of django-project-template.
 
 
 Installation

@@ -126,44 +126,43 @@ versions of Tequila to different projects.  This problem may be
 mitigated by using git submodules, but that brings in its own
 problems.
 
+Other Alternatives
+~~~~~~~~~~~~~~~~~~
 
 Other options in use, either by the community or by the existing
 version of Tequila, include,
 
-Catch-all deployment project
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Catch-all deployment project
 
-One repo would contain not only all roles used by Caktus projects, but
-also each separate project's deployment configuration and inventory
-files.  Since the roles are only ever used in this one repo, there is
-no issue with role path, and the roles themselves are properly reused.
-The downside is that developers would need to checkout and use this
-one massive repo that has everything, even though you rarely need most
-of it.  Also, management of the versioning would be awkward if the
-different projects need different versions of the deployment project
-pinned.
+  One repo would contain not only all roles used by Caktus projects,
+  but also each separate project's deployment configuration and
+  inventory files.  Since the roles are only ever used in this one
+  repo, there is no issue with role path, and the roles themselves are
+  properly reused.  The downside is that developers would need to
+  checkout and use this one massive repo that has everything, even
+  though you rarely need most of it.  Also, management of the
+  versioning would be awkward if the different projects need different
+  versions of the deployment project pinned.
 
-Decouple deployment from the project entirely
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Decouple deployment from the project entirely
 
-Each project would have its own separate deployment repo, which would
-contain the configuration and inventory for that project.  This is a
-fairly typical practice in the Ansible community.  However, the
-problem with this is that the re-usability of roles is poor unless you
-have the shared roles in yet another repo, and then you still have the
-roles path problem.
+  Each project would have its own separate deployment repo, which
+  would contain the configuration and inventory for that project.
+  This is a fairly typical practice in the Ansible community.
+  However, the problem with this is that the re-usability of roles is
+  poor unless you have the shared roles in yet another repo, and then
+  you still have the roles path problem.
 
-Install the roles using pip
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Install the roles using pip
 
-As far as I can tell, this option is not used by the wider Ansible
-community.  It hides the roles, making it extremely inconvenient to
-use the standard Ansible tools, and necessitates extra work to make
-the roles available on the path:
+  As far as I can tell, this option is not used by the wider Ansible
+  community.  It hides the roles, making it extremely inconvenient to
+  use the standard Ansible tools, and necessitates extra work to make
+  the roles available on the path:
 
-- need a wrapper script around ``ansible`` to point to where the roles are, making use of the plain command extremely inconvenient
-- or, need to symlink or unpack the roles (``$ tequila roles``) to the top project directory
-- or, need to inject an environment variable when the virtualenv is active
+  - need a wrapper script around ``ansible`` to point to where the roles are, making use of the plain command extremely inconvenient
+  - or, need to symlink or unpack the roles (``$ tequila roles``) to the top project directory
+  - or, need to inject an environment variable when the virtualenv is active
 
 
 Secrets

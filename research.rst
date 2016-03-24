@@ -3,9 +3,9 @@ Tequila
 
 What is Tequila?
 
-- it's a collection of Ansible roles
-- it's a wrapper script providing a simplified interface for the
-  ``ansible`` command-line program
+- it's a collection of reusable Ansible roles
+- it's a script providing a simplified interface for the ``ansible``
+  command-line program
 
 
 New Projects
@@ -28,16 +28,67 @@ Much of this work has already been started, and is currently on the
 Installation
 ------------
 
-We need to have the ability to pin projects to particular versions of
-tequila.  It is also desirable to have an easy command to install or
-upgrade tequila, along the lines of ``pip install``.
+We would like to have the ability to pin projects to particular
+versions of tequila.  It is also desirable to have an easy command to
+install or upgrade tequila, along the lines of ``pip install``.
 
-Under all of the proposals that follow, I recommend that Tequila be
-pip installable.  The work for this has already been done.
+If we intend to make a ``tequila`` command available, it is
+uncontroversial to make the Tequila project pip installable (and, in
+fact, this work has already been done).  However, the big question is
+how we should make the roles themselves available in a way that they
+can be used by the project.
+
+- ansible-galaxy
+  - one of the Ansible community conventions for re-usable roles
+  - supports versioning
+  - no extra effort needed for the roles path
+  - Ansible Galaxy community and tools are still immature
+  - need to break up the roles into their own repos to conform to
+    the limited structure acceptable by ``ansible-galaxy``
+
+- git checkout
+  - the other convention for re-usable roles
+  - automatically on the roles path if checked out into the top of the
+    project dir, but would need to be gitignored
+  - would allow devs to check it out elsewhere easily, with only a
+    setting to update
+  - version checkout needs to be manually managed by the developer;
+    easy to screw up and deploy with the wrong version
+
+- git submodule
+  - effectively gets versioning back
+  - no extra effort needed to fix roles path
+  - no need for a gitignore
+  - nobody likes these
+
+- catch-all deployment project
+  - since the roles are only ever used by one thing, which covers all
+    Caktus projects, there is no issue with role path
+  - need to have one massive repo that has everything, even though you
+    rarely need most of it
+  - effective role sharing, but poor versioning
+
+- decouple deployment from the project
+  - fairly typically thing in the Ansible community
+  - extra repo to manage, but may be ok if only devops use it
+  - but re-usability of roles is poor, unless you have roles in yet
+    another repo, and then you have the same path problem
+
+- pip install the roles
+  - hides the roles
+  - installation process that is not standard for the Ansible
+    community
+  - extra work needed to make the roles available on the path:
+    - need a wrapper script around ``ansible`` to point to where the
+      roles are, making use of the plain command extremely inconvenient
+    - or, need to symlink or unpack the roles (``$ tequila roles``) to the
+      top project directory
+    - or, need to inject an environment variable when using this
+      virtualenv
 
 
-Proposal 1: ``tequila roles`` command puts the roles in the right place
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Proposal 1: ``$ tequila roles`` command puts the roles in the right place
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Under this proposal, no changes to the structure of the Tequila
 repository need to happen.  Running the ``tequila roles`` command
@@ -129,8 +180,8 @@ What is the point of the tequila repo, then?
 The tequila repo, then, would be a pip-installable central
 clearinghouse for these roles.  It would also get one overall tagged
 release number tying together the release numbers for all of the
-individual roles.  It could also ship with an installation script
-(``tequila roles``) that would call ``ansible-galaxy`` for all of the
+individual roles.  It could also ship with an installation script (``$
+tequila roles``) that would call ``ansible-galaxy`` for all of the
 tequila sub-repo versions relevant for the current tequila release.
 
 People would still be free, however, to install individual tequila
@@ -150,7 +201,8 @@ in-place to include the repo for the role at the head of the
 Proposal 3: all commands must be ``tequila ...`` commands
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This is how the current version of Tequila works.
+This is how the current version of Tequila works (though the command
+isn't currently called ``tequila``).
 
 The ``tequila`` command sets an environment variable for the roles
 path, pointing to the ``tequila/roles`` directory wherever pip
@@ -158,14 +210,12 @@ installed it.
 
 The pros:
 
-- we don't have to worry about a ``roles/`` directory inside our
-  project directory
+- we wouldn't have a ``roles/`` directory that would potentially get
+  accidentally committed inside our project directory
 
 The cons:
 
 - no longer easily able to use Ansible commands directly
-- our roles are even less usable to the larger community than under
-  Proposal 1
 
 
 Secrets
@@ -286,8 +336,6 @@ inventory file.  This opens up the possibility of having a *dynamic*
 inventory.  Ansible itself ships with a few working examples,
 including scripts for AWS EC2 and OpenStack.
 
-.. FIXME: Needs more here.
-
 
 Conversion From Margarita
 -------------------------
@@ -298,7 +346,8 @@ Needed:
 - create the directory structure used by the tequila-specific portions
   of django-project-template
 - skeletons of project-specific Ansible variables files
-- parse and inject pillar data into the Ansible vars files
+- parse and inject pillar data (including secrets?) into the Ansible
+  vars files
 - convert Salt grain info into inventory files
 - default playbooks
 - removal of Salt-specific files (``fabfile.py``, ``install_salt.sh``)
@@ -311,5 +360,5 @@ Only with Installation Proposal 2:
 - default tequila roles ``requirements.yml`` file
 
 
-The main tequila repo could ship with a command (``tequila convert``)
-that may be able to make these changes for us.
+The main tequila repo could ship with a command (``$ tequila
+convert``) that may be able to make these changes for us.

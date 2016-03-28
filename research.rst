@@ -97,13 +97,14 @@ The cons:
 - due to that structure, there is a limit of one role per repo or "package"
 - management of all of these repos, and the versions thereof
 
-To minimize the pain of managing these separate repos, we should keep
-our roles coarse-grained, one role per service type.  Additionally, we
-should minimize dependencies between these roles, preferring instead
-explicit inclusion in the final playbook (e.g. include the ``common``
-and ``nginx`` roles in the playbook's roles section for the set of
-hosts to be used as nginx servers).  These roles should be specific to
-the service implementation, e.g. ``postgres`` not ``db-master``
+To minimize the pain of managing these separate repos, we should
+minimize the number of roles by keeping our roles coarse-grained, one
+role per service type.  Additionally, we should minimize dependencies
+between these roles, preferring instead explicit inclusion in the
+final playbook (e.g. include the ``common`` and ``nginx`` roles in the
+playbook's roles section for the set of hosts to be used as nginx
+servers).  These roles should be specific to the service
+implementation, e.g. ``postgres`` not ``db-master``
 
 For ease of installation, projects will have to ship with an
 ansible-galaxy requirements file, and an ``ansible.cfg`` file

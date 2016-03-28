@@ -80,7 +80,7 @@ With this proposal, we would move each individual role out into its
 own repo, with the naming scheme ``tequila-<rolename>``.  Each role
 repo would get a tagged release number when changes land in master.
 We would not need to immediately commit to publishing to the Ansible
-Galaxy site, since roles can also be installed by pointing to a repo
+Galaxy site, since roles can also be installed by pointing to a repo.
 
 The pros:
 
@@ -97,6 +97,14 @@ The cons:
 - due to that structure, there is a limit of one role per repo or "package"
 - management of all of these repos, and the versions thereof
 
+To minimize the pain of managing these separate repos, we should keep
+our roles coarse-grained, one role per service type.  Additionally, we
+should minimize dependencies between these roles, preferring instead
+explicit inclusion in the final playbook (e.g. include the ``common``
+and ``nginx`` roles in the playbook's roles section for the set of
+hosts to be used as nginx servers).  These roles should be specific to
+the service implementation, e.g. ``postgres`` not ``db-master``
+
 For ease of installation, projects will have to ship with an
 ansible-galaxy requirements file, and an ``ansible.cfg`` file
 specifying a ``roles_path`` within the project's directory structure
@@ -107,6 +115,7 @@ Under this proposal, the Tequila repo itself would be reduced to only
 providing the simplified Ansible CLI, and the minimal files necessary
 for conversions of existing django-project-template projects to use
 Tequila.
+
 
 Other Alternatives
 ~~~~~~~~~~~~~~~~~~

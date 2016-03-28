@@ -165,6 +165,49 @@ version of Tequila, include,
   - or, need to inject an environment variable when the virtualenv is active
 
 
+Examples & References
+~~~~~~~~~~~~~~~~~~~~~
+
+- https://github.com/enginyoyen/ansible-best-practises
+
+  - separate deployment repo
+  - best practices
+
+- https://github.com/LucianU/bud/tree/master/%7B%7Bcookiecutter.repo_name%7D%7D
+
+  - uses cookie-cutter to quickly get a Django project going
+  - ``ansible/`` deployment configuration directory
+  - makes use of ``ansible-galaxy`` to install granular roles
+  - includes Vagrant
+
+- https://github.com/benregn/cookiecutter-django-ansible
+
+  - also for Django, also uses cookie-cutter
+  - ``<reponame>/provisioning`` Ansible directory
+  - ships with its own roles, so not very maintainable across many projects
+
+- https://github.com/tryolabs/metamon
+
+  - not cookie-cutter, actually recommends copy-pasting metamon files into target project
+  - also ships with its own roles
+  - includes Vagrant
+
+- https://www.stavros.io/posts/example-provisioning-and-deployment-ansible/
+
+  - Django
+  - does not separate out plays into roles
+
+- https://github.com/jcalazan/ansible-django-stack
+
+  - Django
+  - separate deployment repo instead of template/mod for codebase repo
+  - includes Vagrant
+
+- https://groups.google.com/forum/#!msg/ansible-project/vgc2bFQgzmE/0SDKwCniPjgJ
+
+  - Google Groups thread about this problem
+
+
 Secrets
 -------
 

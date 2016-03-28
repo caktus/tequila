@@ -43,8 +43,9 @@ for reusing roles across multiple deployment projects: installation
 using ``ansible-galaxy``, or checking out the roles repo to some
 conventional location.
 
-Proposal 1: installation using ``ansible-galaxy``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Proposal: installation using ``ansible-galaxy``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This is the intended method provided by the Ansible project to allow
 the publishing and reuse of roles across the entire Ansible community.
@@ -107,30 +108,29 @@ providing the simplified Ansible CLI, and the minimal files necessary
 for conversions of existing django-project-template projects to use
 Tequila.
 
-Proposal 2: conventional location
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The roles would remain in a single centralized repository, which would
-then need to be checked out in a standard location by the developer in
-order to be available to the ``ansible`` command, typically in the top
-level directory or ``deployment/`` sub-directory of the codebase to be
-deployed.  This option easily allows checkout of the roles repo
-elsewhere on the developer's system, however, with only the minor
-extra effort of setting the ``roles_path`` Ansible configuration
-setting.  The advantage here is we have a single repo to manage
-instead of multiple, and versioning can be kept consistent over the
-entire set of roles.  However, which version actually gets used to
-deploy a given project will be up to the developer to manage, making
-this choice fragile if we do wind up pinning a bunch of different
-versions of Tequila to different projects.  This problem may be
-mitigated by using git submodules, but that brings in its own
-problems.
-
 Other Alternatives
 ~~~~~~~~~~~~~~~~~~
 
 Other options in use, either by the community or by the existing
 version of Tequila, include,
+
+- Conventional location
+
+  The roles would remain in a single centralized repository, which
+  would then need to be checked out in a standard location by the
+  developer in order to be available to the ``ansible`` command,
+  typically in the top level directory or ``deployment/``
+  sub-directory of the codebase to be deployed.  This option easily
+  allows checkout of the roles repo elsewhere on the developer's
+  system, however, with only the minor extra effort of setting the
+  ``roles_path`` Ansible configuration setting.  The advantage here is
+  we have a single repo to manage instead of multiple, and versioning
+  can be kept consistent over the entire set of roles.  However, which
+  version actually gets used to deploy a given project will be up to
+  the developer to manage, making this choice fragile if we do wind up
+  pinning a bunch of different versions of Tequila to different
+  projects.  This problem may be mitigated by using git submodules,
+  but that brings in its own problems.
 
 - Catch-all deployment project
 

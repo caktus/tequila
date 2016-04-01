@@ -133,13 +133,13 @@ How to use
   as root or ubuntu or whatever the initial user the server has set up
   is.
 
-* Run ``deploy <envname>`` to update servers.  E.g.::
+* Run ``tequila <envname>`` to update servers.  E.g.::
 
-    deploy staging
+    tequila staging
 
   or::
 
-    deploy production
+    tequila production
 
 Where to set variables
 ----------------------
@@ -147,7 +147,7 @@ Where to set variables
 Ansible supports setting variables in many places. Let's try to agree on some
 common practices for our projects:
 
-* The ``deploy`` script sets a few variables on the command line that take
+* The ``tequila`` script sets a few variables on the command line that take
   precedence over all others.
 
     tequila_dir: Directory where tequila was installed.  The ``roles`` subdirectory
@@ -155,7 +155,7 @@ common practices for our projects:
 
     env_name: Name of the environment being deployed.
 
-    local_project_dir: The current directory when deploy was invoked.
+    local_project_dir: The current directory when ``tequila`` was invoked.
 
 * Variables that are global to the project go in ``inventory/group_vars/all/vars.yml``
   and ``inventory/group_vars/all/secrets.yml``::
@@ -196,7 +196,7 @@ common practices for our projects:
 TODO for this README
 --------------------
 
-TODO: Add full documentation for the ``deploy`` script.
+TODO: Add full documentation for the ``tequila`` script.
 
 TODO: Create more detailed documentation, including which groups to use and
 what variables need to be set, and lots of examples of the whole process

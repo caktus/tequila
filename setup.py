@@ -14,7 +14,7 @@ setup(
     include_package_data=True,
     entry_points={
         'console_scripts': [
-            'deploy=tequila.deploy:main',
+            'tequila=tequila.tequila:main',
         ],
     },
     install_requires=[

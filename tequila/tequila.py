@@ -51,14 +51,6 @@ def touch(filename, content):
 
 
 def main():
-    tequila_dir = os.path.dirname(tequila.__file__)
-
-    tequila_roles_dir = os.path.join(tequila_dir, 'roles')
-    if not os.path.exists(tequila_roles_dir):
-        raise Exception("Something is wrong, tequila roles were expected to be at "
-                        "%s but they're not" % tequila_roles_dir)
-    os.environ['ANSIBLE_ROLES_PATH'] = 'roles:%s' % tequila_roles_dir
-
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "envname",
@@ -106,7 +98,6 @@ def main():
     playbook_options = [
         '--become',
         '-i', inventory_file,
-        #'-e', 'tequila_dir=%s' % tequila_dir,   # Do we need this?
         '-e', 'env_name=%s' % envname,
         '-e', 'local_project_dir=%s' % os.getcwd(),
     ]
@@ -116,7 +107,7 @@ def main():
     else:
         print("WARNING: No {} file found.  If Ansible vault complains, that\'s why.".format(password_file))
 
-    command = ['ansible-playbook'] + playbook_options + ['%s/deploy.yml' % tequila_dir]
+    command = ['ansible-playbook'] + playbook_options
 
     print("Invoking ansible: {}".format(command))
 

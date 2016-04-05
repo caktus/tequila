@@ -1,37 +1,10 @@
 import argparse
 import os
-import os.path
 from subprocess import check_call
 
 import tequila
 
 # TODO: Provide a way to pass additional arguments to ansible-playbook
-
-INVENTORY_FILE_TEMPLATE = """# Inventory file for environment {envname}
-dbserver1 ansible_ssh_host="1.2.3.4"
-generalpurpose1 ansible_ssh_host="1.2.3.5" ansible_user="user2"
-generalpurpose2 ansible_ssh_host="1.2.3.6"
-
-[db]
-dbserver1
-
-[worker]
-generalpurpose1
-generalpurpose2
-
-[web]
-generalpurpose1
-generalpurpose2
-"""
-
-SECRETS_FILE_TEMPLATE = """---
-# Secrets file for environment {envname}
-# Put password in .vaultpassword then encrypt using:
-#  ansible-vault encrypt {filename}
-# and edit using
-#  ansible-vault edit {filename}
-password: noway
-"""
 
 
 def touch(filename, content):
@@ -50,65 +23,76 @@ def touch(filename, content):
         f.close()
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "envname",
-        help="Required: name of the environment to deploy, e.g. 'staging' or 'production'",
-    )
-    parser.add_argument(
-        "--newenv",
-        action='store_true',
-        help="Create the files for the environment specified as `envname` if they "
-             "don't already exist, then exit.",
-    )
-    parser.add_argument(
-        "--inventory",
-        "-i",
-        action='store',
-        help="Use a different inventory file than the default."
-    )
-    args = parser.parse_args()
-    envname = args.envname
+def convert(args):
+    print(args)
 
-    inventory_file = args.inventory or 'inventory/{}'.format(envname)
-    global_vars_file = 'inventory/group_vars/all/vars.yml'
-    env_vars_file = 'inventory/group_vars/{}/vars.yml'.format(envname)
-    global_secrets_file = 'inventory/group_vars/all/secrets.yml'
-    env_secrets_file = 'inventory/group_vars/{}/secrets.yml'.format(envname)
-    password_file = '.vaultpassword-{envname}'.format(envname=envname)
 
-    if args.newenv:
-        print("Creating new environment {!r}".format(envname))
-        touch(inventory_file,
-              INVENTORY_FILE_TEMPLATE.format(envname=envname))
-        touch(env_vars_file,
-              "---\n# Variables file for environment {}\nfoo: bar\n".format(envname))
-        touch(env_secrets_file, SECRETS_FILE_TEMPLATE
-              .format(envname=envname, filename=env_secrets_file))
-        return
+def install(args):
+    print(args)
 
+
+def new(args):
+    print(args)
+
+
+def deploy(args):
+    command = ['ansible-playbook']
+
+    inventory_file = os.path.join(
+        'deployment', 'environments', args.envname, 'inventory')
     if not os.path.exists(inventory_file):
-        print("ERROR: No inventory file found at {!r}, is {!r} a valid environment?".format(inventory_file, envname))
-        return
-    if not os.path.exists(env_vars_file):
-        print("ERROR: No vars file found at {!r}, is {!r} a valid environment?".format(env_vars_file, envname))
+        print("ERROR: No inventory file found at {!r},"
+              " is {!r} a valid environment?".format(inventory_file, envname))
         return
 
-    playbook_options = [
+    if args.playbook == 'site.yml':
+        playbook_file = os.path.join('deployment', 'site.yml')
+    else:
+        playbook_file = os.path.join(
+            'deployment', 'playbooks', args.playbook)
+    if not os.path.exists(playbook_file):
+        print("ERROR: No playbook file found at {!r}.".format(playbook_file))
+        return
+
+    command.extend([
         '--become',
         '-i', inventory_file,
-        '-e', 'env_name=%s' % envname,
-        '-e', 'local_project_dir=%s' % os.getcwd(),
-    ]
-
-    if os.path.exists(password_file):
-        playbook_options.extend(['--vault-password-file', password_file])
-    else:
-        print("WARNING: No {} file found.  If Ansible vault complains, that\'s why.".format(password_file))
-
-    command = ['ansible-playbook'] + playbook_options
+        playbook_file,
+    ])
 
     print("Invoking ansible: {}".format(command))
-
     check_call(command)
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    subparsers = parser.add_subparsers(help="sub-command help")
+
+    parser_convert = subparsers.add_parser('convert', help="convert help")
+    parser_convert.set_defaults(func=convert)
+
+    parser_install = subparsers.add_parser('install', help="install help")
+    parser_install.set_defaults(func=install)
+
+    parser_new = subparsers.add_parser('new', help="new help")
+    parser_new.set_defaults(func=new)
+    parser_new.add_argument(
+        'envname',
+        help=("Required: name of the new environment to create an inventory"
+              " and vars files for.")
+    )
+
+    parser_deploy = subparsers.add_parser('deploy', help="deploy help")
+    parser_deploy.set_defaults(func=deploy)
+    parser_deploy.add_argument(
+        'envname',
+        help=("Required: name of the environment to deploy to, e.g. 'staging'"
+              " or 'production'.")
+    )
+    parser_deploy.add_argument(
+        'playbook', nargs='?', default='site.yml',
+        help=("Optional: name of the Ansible playbook to execute.")
+    )
+
+    args = parser.parse_args()
+    args.func(args)

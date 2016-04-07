@@ -2,25 +2,7 @@ import argparse
 import os
 from subprocess import check_call
 
-import tequila
-
 # TODO: Provide a way to pass additional arguments to ansible-playbook
-
-
-def touch(filename, content):
-    """
-    Create an empty file at `filename` but only if it
-    doesn't already exist. Also creates any necessary
-    intermediate directories.
-    """
-    if not os.path.exists(filename):
-        fullpath = os.path.abspath(filename)
-        directory = os.path.dirname(fullpath)
-        if not os.path.isdir(directory):
-            os.makedirs(directory)
-        f = open(filename, "w")
-        f.write(content)
-        f.close()
 
 
 def convert(args):

@@ -27,11 +27,7 @@ def deploy(args):
               " is {!r} a valid environment?".format(inventory_file, envname))
         return
 
-    if args.playbook == 'site.yml':
-        playbook_file = os.path.join('deployment', 'site.yml')
-    else:
-        playbook_file = os.path.join(
-            'deployment', 'playbooks', args.playbook)
+    playbook_file = os.path.join('deployment', 'playbooks', args.playbook)
     if not os.path.exists(playbook_file):
         print("ERROR: No playbook file found at {!r}.".format(playbook_file))
         return

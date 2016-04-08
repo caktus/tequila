@@ -142,6 +142,43 @@ Project Structure
     - src: https://github.com/caktus/tequila-rabbitmq
       version: master
 
+  If you need to install specific branches of the roles (for Ansible
+  >= 2.1.0),::
+
+    ---
+    - src: https://github.com/caktus/tequila-common
+      version: branchname
+
+    - src: https://github.com/caktus/tequila-nginx
+      version: branchname
+
+    - src: https://github.com/caktus/tequila-django
+      version: branchname
+
+    - src: https://github.com/caktus/tequila-postgresql
+      version: branchname
+
+    - src: https://github.com/caktus/tequila-rabbitmq
+      version: branchname
+
+  This doesn't work properly for Ansible < 2.1.0, but can be worked around,::
+
+    ---
+    - src: https://github.com/caktus/tequila-common/archive/branchname.tar.gz
+      name: tequila-common
+
+    - src: https://github.com/caktus/tequila-nginx/archive/branchname.tar.gz
+      name: tequila-nginx
+
+    - src: https://github.com/caktus/tequila-django/archive/branchname.tar.gz
+      name: tequila-django
+
+    - src: https://github.com/caktus/tequila-postgresql/archive/branchname.tar.gz
+      name: tequila-postgresql
+
+    - src: https://github.com/caktus/tequila-rabbitmq/archive/branchname.tar.gz
+      name: tequila-rabbitmq
+
 
 Where to set variables
 ----------------------

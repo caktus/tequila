@@ -237,7 +237,7 @@ recommended conventions:
 
     ---
     # file: deployment/group_vars/staging/vars.yml
-    DB_PASSWORD: {{ SECRET_DB_PASSWORD }}
+    db_password: {{ SECRET_DB_PASSWORD }}
 
   By convention, names of variables placed in encrypted files should
   have the prefix ``SECRET_``.  (This two-step approach to secret

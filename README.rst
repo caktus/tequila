@@ -232,11 +232,11 @@ recommended conventions:
   a corresponding non-encrypted file ::
 
     ---
-    # file: deployment/group_vars/staging/secrets.yml
+    # file: deployment/environments/staging/group_vars/all/secrets.yml
     SECRET_DB_PASSWORD: "value of password"
 
     ---
-    # file: deployment/group_vars/staging/vars.yml
+    # file: deployment/playbooks/group_vars/all.yml
     db_password: {{ SECRET_DB_PASSWORD }}
 
   By convention, names of variables placed in encrypted files should

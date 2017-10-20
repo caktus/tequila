@@ -1,0 +1,22 @@
+---
+- hosts: web
+  become: yes
+  tasks:
+    - name: upload the database dump file
+      copy:
+        src: "../../{{ db_name }}.sql"
+        dest: ""
+      run_once: true
+
+    - name: delete the database
+      command: dropdb {{ db_name }}
+      run_once: true
+
+    - name: create a new database
+      command: createdb -E UTF-8 {{ db_name }}
+      run_once: true
+
+    - name: load the db dump file
+      command: psql -f ../../{{ db_name }}.sql
+      command: "psql -U {{ db_user }} -h {{ db_host }} -f {{ dump_path }} {{ db_name }}"
+      run_once: true

@@ -1,0 +1,32 @@
+---
+- hosts: web
+  become: yes
+  tasks:
+    - name: create a tempdir
+      command: "mktemp -d"
+      run_once: true
+      register: temp_dir
+
+    - set_fact:
+        dump_path: "{{ temp_dir.stdout }}/{{ db_name }}.sql"
+      run_once: true
+
+    - name: dump the database into a file
+      command: "pg_dump -U {{ db_user }} -h {{ db_host }} -f {{ dump_path }} -Oxc {{ db_name }}"
+      environment:
+        PGPASSWORD: "{{ db_password }}"
+      run_once: true
+
+    - name: download the db dump
+      fetch:
+        src: "{{ dump_path }}"
+        dest: "../../{{ db_name }}.sql"
+        flat: yes
+      delegate_to: 127.0.0.1
+      run_once: true
+
+    - name: remove the tempdir
+      file:
+        path: "{{ temp_dir.stdout }}"
+        state: absent
+      run_once: true

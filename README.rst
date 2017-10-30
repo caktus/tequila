@@ -1,16 +1,40 @@
 Tequila
 =======
 
-This repository holds a collection of roles for deployments using
-`Ansible <http://www.ansible.com/home>`_.  These exist primarily to
-support the `Caktus Django project template
+This repository holds the documentation for a collection of `Ansible
+<http://www.ansible.com/home>`_ roles for deployments of `Django
+<https://docs.djangoproject.com/>`_ projects.  These exist primarily
+to support the `Caktus Django project template
 <https://github.com/caktus/django-project-template>`_.
+
+`tequila-common <https://github.com/caktus/tequila-common>`_
+    Install common system packages, setup server users and keys, add
+    some basic security configuration, and create the standard project
+    directory structure.
+
+`tequila-nginx <https://github.com/caktus/tequila-nginx>`_
+    Install and configure `nginx <https://nginx.org/en/docs/>`_ as a
+    forwarding proxy for a Django project.
+
+`tequila-django <https://github.com/caktus/tequila-django>`_
+    Set up a Django project to run under `gunicorn
+    <http://docs.gunicorn.org/en/stable/>`_ and/or `Celery
+    <http://docs.celeryproject.org/en/latest/>`_.
+
+`tequila-postgresql <https://github.com/caktus/tequila-postgresql>`_
+    Install a `PostgreSQL <https://www.postgresql.org/>`_ server and
+    create a project database.
+
+`tequila-rabbitmq <https://github.com/caktus/tequila-rabbitmq>`_
+    Install and configure `RabbitMQ <https://www.rabbitmq.com/>`_ to
+    use as a task queue for projects that use Celery.
 
 
 License
 -------
 
-These playbooks are released under the BSD License.  See the `LICENSE
+The playbooks, roles, and code for this project are released under the
+BSD License.  See the `LICENSE
 <https://github.com/caktus/tequila/blob/master/LICENSE>`_ file for
 more details.
 

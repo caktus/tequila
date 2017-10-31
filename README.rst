@@ -8,7 +8,7 @@ to support the `Caktus Django project template
 <https://github.com/caktus/django-project-template>`_.
 
 `tequila-common <https://github.com/caktus/tequila-common>`_
-    Install common system packages, setup server users and keys, add
+    Install common system packages, set up server users and keys, add
     some basic security configuration, and create the standard project
     directory structure.
 
@@ -28,6 +28,19 @@ to support the `Caktus Django project template
 `tequila-rabbitmq <https://github.com/caktus/tequila-rabbitmq>`_
     Install and configure `RabbitMQ <https://www.rabbitmq.com/>`_ to
     use as a task queue for projects that use Celery.
+
+Additionally, work is in progress on a couple more subprojects,
+
+`tequila-cli <https://github.com/caktus/tequila-cli>`_
+    A command-line Ansible wrapper that allows referencing inventories
+    and playbooks in standard locations by more compact names, and
+    allows for some actions that are difficult to do in a single
+    command with standard Ansible.
+
+`tequila-dokku <https://github.com/caktus/tequila-dokku>`_
+    A role that sets up a Django project under `Dokku
+    <http://dokku.viewdocs.io/dokku/>`_, a `Docker
+    <https://docs.docker.com/>`_ -powered Platform-as-a-Service.
 
 
 License

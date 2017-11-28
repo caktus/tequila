@@ -43,12 +43,10 @@ Additionally, work is in progress on a couple more subprojects,
    :caption: Contents:
 
    development
-   contributing
 
 
 Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`

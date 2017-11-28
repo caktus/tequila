@@ -46,6 +46,7 @@ Additionally, work is in progress on a couple more subprojects,
    :caption: Contents:
 
    build_documentation
+   role_development
 
 
 Indices and tables

@@ -42,7 +42,7 @@ Additionally, work is in progress on a couple more subprojects,
    :maxdepth: 2
    :caption: Contents:
 
-   development
+   build_documentation
 
 
 Indices and tables

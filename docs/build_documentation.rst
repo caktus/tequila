@@ -1,5 +1,5 @@
-Development
-===========
+Building the Documentation
+==========================
 
 You will need to have a checkout of the repo on your machine ::
 

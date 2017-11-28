@@ -1,7 +1,10 @@
 Tequila
 =======
 
-TODO: description
+Tequila is a set of `Ansible <https://www.ansible.com/>`_ roles and
+other tooling useful for deploying `Django
+<https://www.djangoproject.com/>`_ projects.
+
 
 `tequila-common <https://github.com/caktus/tequila-common>`_
     Install common system packages, set up server users and keys, add

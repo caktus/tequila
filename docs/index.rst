@@ -52,5 +52,4 @@ Additionally, work is in progress on a couple more subprojects,
 Indices and tables
 ==================
 
-* :ref:`genindex`
 * :ref:`search`

@@ -1,0 +1,7 @@
+---
+- include: common.yml
+- include: db.yml
+- include: queue.yml
+- include: web.yml
+- include: worker.yml
+- include: search.yml

@@ -1,0 +1,10 @@
+---
+- hosts: search
+  become: yes
+  roles:
+    - geerlingguy.java
+    - geerlingguy.elasticsearch
+
+  post_tasks:
+    - name: allow connections to the elasticsearch server
+      ufw: rule=allow port=9200

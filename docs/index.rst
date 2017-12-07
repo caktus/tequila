@@ -47,6 +47,7 @@ Additionally, work is in progress on a couple more subprojects,
 
    build_documentation
    role_development
+   project_setup
 
 
 Indices and tables

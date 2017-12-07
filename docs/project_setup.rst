@@ -161,22 +161,22 @@ Adding Tequila to a Django Project
    configuration variables.
 
 #. **Optional:** Update or create the Makefile, if needed, using the
-   copy from this repo as a guide.  There is probably not too much
-   that needs to change here, other than changing references from
-   conf/keys/ to deployment/keys/.  **TODO:** copy an updated Makefile
-   into this repo.
+   copy from `caktus/django-project-template
+   <https://github.com/caktus/django-project-template/blob/master/Makefile>`_
+   as a guide.  There is probably not too much that needs to change
+   here, other than changing references from conf/ to deployment/.
 
    It is possible to get by without this Makefile, but it is still
-   strongly recommended to at least have some means of generating
+   strongly recommended to have some means of generating
    per-environment ssh keys to use to grant permission for your
    servers to check out a copy of the repo from your source control
    service (whether that is github.com or some other one).
 
 #. Create public deployment ssh keys using the Makefile (e.g. ``make
-   deployment/keys/staging.pub.ssh``), or move over the existing ones
-   (e.g. ``mv -i conf/keys/*.pub.ssh deployment/keys/``).  If you do
-   create new ones, add them to the github repo's "Deploy keys"
-   setting.
+   deployment/keys/staging.pub.ssh``) or some other means, or move
+   over the existing ones (e.g. ``mv -i conf/keys/*.pub.ssh
+   deployment/keys/``).  If you do create new ones, add them to the
+   github repo's "Deploy keys" setting.
 
 #. Fill in the developer usernames and ssh keys into
    deployment/playbooks/group_vars/all/devs.yml.  Tequila expects the

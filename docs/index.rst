@@ -1,11 +1,10 @@
 Tequila
 =======
 
-This repository holds the documentation for a collection of `Ansible
-<http://www.ansible.com/home>`_ roles for deployments of `Django
-<https://docs.djangoproject.com/>`_ projects.  These exist primarily
-to support the `Caktus Django project template
-<https://github.com/caktus/django-project-template>`_.
+Tequila is a set of `Ansible <https://www.ansible.com/>`_ roles and
+other tooling useful for deploying `Django
+<https://www.djangoproject.com/>`_ projects.
+
 
 `tequila-common <https://github.com/caktus/tequila-common>`_
     Install common system packages, set up server users and keys, add
@@ -42,21 +41,15 @@ Additionally, work is in progress on a couple more subprojects,
     <http://dokku.viewdocs.io/dokku/>`_, a `Docker
     <https://docs.docker.com/>`_ -powered Platform-as-a-Service.
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
 
-License
--------
-
-The playbooks, roles, and code for this project are released under the
-BSD License.  See the `LICENSE
-<https://github.com/caktus/tequila/blob/master/LICENSE>`_ file for
-more details.
+   build_documentation
+   role_development
 
 
-Contributing
-------------
+Indices and tables
+==================
 
-If you think you've found a bug or are interested in contributing to this project
-check out `tequila on Github <https://github.com/caktus/tequila>`_.
-
-Development sponsored by `Caktus Consulting Group, LLC
-<http://www.caktusgroup.com/services>`_.
+* :ref:`search`

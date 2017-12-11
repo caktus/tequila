@@ -14,7 +14,7 @@ deployment/roles/ directory within your Django project's tree ::
 
     $ cd my-django-project/
     $ workon project
-    (project)$ ansible-galaxy uninstall tequila-common
+    (project)$ ansible-galaxy remove tequila-common
     (project)$ cd deployment/roles/
     (project)$ ln -s /path/to/tequila-common
 

@@ -90,6 +90,11 @@ Adding Tequila to a Django Project
    .gitignore file, to ignore the files left behind when a deployment
    fails.
 
+#. Now that you've added ``/deployment/roles/`` and ``*.retry`` to the
+   .gitignore file, install each of the entries in ``deployment/requirements.yml``::
+
+       ansible-galaxy install -r deployment/requirements.yml
+
 #. In deployment/playbooks/, copy over the selection of playbook files
    from the playbooks/ directory of this repo.  Currently this should
    be, at a minimum, bootstrap_python.yml (a small playbook used to

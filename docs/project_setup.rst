@@ -213,7 +213,7 @@ Adding Tequila to a Django Project
    look something like this ::
 
        ---
-       project_name: sample-project
+       project_name: sample_project
        python_version: 3.5
        pg_version: 9.5
        gunicorn_version: 19.7.1
@@ -244,6 +244,11 @@ Adding Tequila to a Django Project
    those secret values.  This allows the variable names to be
    grep-able, which they wouldn't be if they were set directly in the
    encrypted secrets.yml files.
+
+   A note about the ``project_name``: Though it is not obvious here, this
+   variable must be a valid python module, because it gets imported during
+   the deploy. For example, setting ``project_name`` to ``sample-project``
+   will throw an error during the deploy.
 
    While tequila-postgresql and -django do define a default database
    name, it turns out that it is a good idea to have this variable

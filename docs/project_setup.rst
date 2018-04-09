@@ -410,7 +410,12 @@ Adding Tequila to a Django Project
    Caktus-style fabfile.py and it has such a command) or directly
    using the ansible command ``ansible-playbook -i
    deployment/environments/<envname>/inventory
-   deployment/playbooks/bootstrap_python.yml``.
+   deployment/playbooks/bootstrap_python.yml``. Note: in case you are
+   running this command before you have set up users, you will get a
+   "Permission denied" error (since your user does not yet exist). Instead,
+   you must run the command as the root user: ``ansible-playbook -i
+   deployment/environments/<envname>/inventory -u root
+   deployment/playbooks/bootstrap_python.yml``
 
 #. If you created new ssh deployment keys, revoke the old ones on
    github.com after the cutover.

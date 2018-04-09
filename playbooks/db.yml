@@ -2,4 +2,4 @@
 - hosts: db
   become: yes
   roles:
-  - tequila-postgresql
+    - tequila-postgresql

@@ -424,6 +424,11 @@ Adding Tequila to a Django Project
    exist). Instead, you must run the command as the root user:
    ``ansible-playbook -i deployment/environments/<envname>/inventory -u root
    deployment/playbooks/bootstrap_python.yml``
+   Some environments may have different requirements. For example, an Ubuntu
+   server on AWS requires you to run the command as ``ubuntu``, and to pass
+   the private key:
+   ``ansible-playbook -i deployment/environments/<envname>/inventory -u ubuntu
+   --private-key=<path to private key> deployment/playbooks/bootstrap_python.yml``
 
 #. If you created new ssh deployment keys, revoke the old ones on
    github.com after the cutover.

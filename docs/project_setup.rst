@@ -106,7 +106,9 @@ Adding Tequila to a Django Project
    catch-all playbook that uses the include directive to pull in at
    least the common, db, web, worker, and queue playbooks).  Other
    playbooks should be created as needed to fill other
-   project-specific needs.
+   project-specific needs. For instance, bootstrap_db.yml may be used for
+   setting up an AWS RDS database, and search.yml may be used for setting
+   us elasticsearch.
 
    Make sure to sanity check the contents of each playbook for
    applicability to the project.

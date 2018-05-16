@@ -38,7 +38,7 @@ Adding Tequila to a Django Project
    this ::
 
        {
-         "name": "sample-project",
+         "name": "sample_project",
          "dependencies": {
          }
        }
@@ -81,17 +81,17 @@ Adding Tequila to a Django Project
    <https://galaxy.ansible.com/geerlingguy/>`_, one of the Ansible
    core developers, on our projects.
 
-   If you were to run ``ansible-galaxy install -r
-   deployment/requirements.yml`` now, a deployment/roles/ directory
-   would automatically be created and all of your specified roles
-   would be downloaded into it.  We do not want to check any of those
-   into the repo, so add ``/deployment/roles/`` to the project's
-   .gitignore file.  While you are at it, also add ``*.retry`` to the
-   .gitignore file, to ignore the files left behind when a deployment
-   fails.
+#. If you were to install the roles from the requirements file now, a
+   deployment/roles/ directory would automatically be created and all
+   of your specified roles would be downloaded into it.  We do not
+   want to check any of those into the repo, so add
+   ``/deployment/roles/`` to the project's .gitignore file.  While you
+   are at it, also add ``*.retry`` to the .gitignore file, to ignore
+   the files left behind when a deployment fails.
 
-#. Now that you've added ``/deployment/roles/`` and ``*.retry`` to the
-   .gitignore file, install each of the entries in ``deployment/requirements.yml``::
+   Now that you've added ``/deployment/roles/`` and ``*.retry`` to the
+   .gitignore file, you can install each of the entries in
+   ``deployment/requirements.yml`` using::
 
        ansible-galaxy install -r deployment/requirements.yml
 
@@ -106,9 +106,9 @@ Adding Tequila to a Django Project
    catch-all playbook that uses the include directive to pull in at
    least the common, db, web, worker, and queue playbooks).  Other
    playbooks should be created as needed to fill other
-   project-specific needs. For instance, bootstrap_db.yml may be used for
-   setting up an AWS RDS database, and search.yml may be used for setting
-   us elasticsearch.
+   project-specific needs.  For instance, bootstrap_db.yml may be used
+   for setting up an AWS RDS database, and search.yml may be used for
+   setting up Elasticsearch.
 
    Make sure to sanity check the contents of each playbook for
    applicability to the project.
@@ -234,8 +234,8 @@ Adding Tequila to a Django Project
 
        github_deploy_key: "{{ SECRET_GITHUB_DEPLOY_KEY|default('') }}"
        # db_host: per environment
-       db_name: 'sample-project_{{ env_name }}'
-       db_user: 'sample-project'
+       db_name: 'sample_project_{{ env_name }}'
+       db_user: 'sample_project'
        db_password: "{{ SECRET_DB_PASSWORD }}"
        secret_key: "{{ SECRET_KEY }}"
 
@@ -275,7 +275,7 @@ Adding Tequila to a Django Project
 
        extra_env:
          NEW_RELIC_LICENSE_KEY: "{{ new_relic_license_key }}"
-         NEW_RELIC_APP_NAME: "'sample-project staging'"
+         NEW_RELIC_APP_NAME: "'sample_project staging'"
 
    Refer to the README.rst of each of the Tequila roles for the
    meaning and allowed values of each variable.

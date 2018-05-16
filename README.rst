@@ -43,6 +43,15 @@ Additionally, work is in progress on a couple more subprojects,
     <https://docs.docker.com/>`_ -powered Platform-as-a-Service.
 
 
+Setting Up Tequila
+------------------
+
+For projects that have not used Tequila before, check out the `project setup
+<https://github.com/caktus/tequila/blob/master/docs/project_setup.rst>`_
+documentation. This document also provides helpful hints for projects switching
+from `Margarita <https://github.com/caktus/margarita>`_.
+
+
 License
 -------
 

@@ -38,7 +38,7 @@ Adding Tequila to a Django Project
    this ::
 
        {
-         "name": "sample-project",
+         "name": "sample_project",
          "dependencies": {
          }
        }
@@ -85,14 +85,19 @@ Adding Tequila to a Django Project
    <https://galaxy.ansible.com/geerlingguy/>`_, one of the Ansible
    core developers, on our projects.
 
-   If you were to run ``ansible-galaxy install -r
-   deployment/requirements.yml`` now, a deployment/roles/ directory
-   would automatically be created and all of your specified roles
-   would be downloaded into it.  We do not want to check any of those
-   into the repo, so add ``/deployment/roles/`` to the project's
-   .gitignore file.  While you are at it, also add ``*.retry`` to the
-   .gitignore file, to ignore the files left behind when a deployment
-   fails.
+#. If you were to install the roles from the requirements file now, a
+   deployment/roles/ directory would automatically be created and all
+   of your specified roles would be downloaded into it.  We do not
+   want to check any of those into the repo, so add
+   ``/deployment/roles/`` to the project's .gitignore file.  While you
+   are at it, also add ``*.retry`` to the .gitignore file, to ignore
+   the files left behind when a deployment fails.
+
+   Now that you've added ``/deployment/roles/`` and ``*.retry`` to the
+   .gitignore file, you can install each of the entries in
+   ``deployment/requirements.yml`` using::
+
+       ansible-galaxy install -r deployment/requirements.yml
 
 #. In deployment/playbooks/, copy over the selection of playbook files
    from the playbooks/ directory of this repo.  Currently this should
@@ -105,7 +110,9 @@ Adding Tequila to a Django Project
    site.yml (a catch-all playbook that uses the include directive to
    pull in at least the common, db, web, worker, and queue playbooks).
    Other playbooks should be created as needed to fill other
-   project-specific needs.
+   project-specific needs. For instance, bootstrap_db.yml may be used
+   for setting up an AWS RDS database, and search.yml may be used for
+   setting up Elasticsearch.
 
    Make sure to sanity check the contents of each playbook for
    applicability to the project.
@@ -212,7 +219,7 @@ Adding Tequila to a Django Project
    look something like this ::
 
        ---
-       project_name: sample-project
+       project_name: sample_project
        python_version: 3.5
        pg_version: 9.5
        gunicorn_version: 19.7.1
@@ -231,8 +238,8 @@ Adding Tequila to a Django Project
 
        github_deploy_key: "{{ SECRET_GITHUB_DEPLOY_KEY|default('') }}"
        # db_host: per environment
-       db_name: 'sample-project_{{ env_name }}'
-       db_user: 'sample-project'
+       db_name: 'sample_project_{{ env_name }}'
+       db_user: 'sample_project'
        db_password: "{{ SECRET_DB_PASSWORD }}"
        secret_key: "{{ SECRET_KEY }}"
 
@@ -243,6 +250,11 @@ Adding Tequila to a Django Project
    those secret values.  This allows the variable names to be
    grep-able, which they wouldn't be if they were set directly in the
    encrypted secrets.yml files.
+
+   A note about the ``project_name``: Though it is not obvious here, this
+   variable must be a valid python module, because it gets imported during
+   the deploy. For example, setting ``project_name`` to ``sample-project``
+   will throw an error during the deploy.
 
    While tequila-postgresql and -django do define a default database
    name, it turns out that it is a good idea to have this variable
@@ -267,7 +279,7 @@ Adding Tequila to a Django Project
 
        extra_env:
          NEW_RELIC_LICENSE_KEY: "{{ new_relic_license_key }}"
-         NEW_RELIC_APP_NAME: "'sample-project staging'"
+         NEW_RELIC_APP_NAME: "'sample_project staging'"
 
    Refer to the README.rst of each of the Tequila roles for the
    meaning and allowed values of each variable.
@@ -410,6 +422,17 @@ Adding Tequila to a Django Project
    using the ansible command ``ansible-playbook -i
    deployment/environments/<envname>/inventory
    deployment/playbooks/bootstrap_python.yml``.
+
+   Note: in case you are running this command before you have set up users,
+   you will get a "Permission denied" error (since your user does not yet
+   exist). Instead, you must run the command as the root user:
+   ``ansible-playbook -i deployment/environments/<envname>/inventory -u root
+   deployment/playbooks/bootstrap_python.yml``
+   Some environments may have different requirements. For example, an Ubuntu
+   server on AWS requires you to run the command as ``ubuntu``, and to pass
+   the private key:
+   ``ansible-playbook -i deployment/environments/<envname>/inventory -u ubuntu
+   --private-key=<path to private key> deployment/playbooks/bootstrap_python.yml``
 
 #. If you created new ssh deployment keys, revoke the old ones on
    github.com after the cutover.

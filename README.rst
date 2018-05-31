@@ -21,6 +21,12 @@ to support the `Caktus Django project template
     <http://docs.gunicorn.org/en/stable/>`_ and/or `Celery
     <http://docs.celeryproject.org/en/latest/>`_.
 
+`tequila-nodejs <https://github.com/caktus/tequila-nodejs>`_
+    A thin wrapper around `geerlingguy/nodejs
+    <https://github.com/geerlingguy/ansible-role-nodejs>`_,
+    tequila-nodejs installs nodejs and npm, installs your project
+    dependencies, and executes your front-end build script.
+
 `tequila-postgresql <https://github.com/caktus/tequila-postgresql>`_
     Install a `PostgreSQL <https://www.postgresql.org/>`_ server and
     create a project database.

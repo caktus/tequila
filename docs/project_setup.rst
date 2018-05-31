@@ -65,16 +65,20 @@ Adding Tequila to a Django Project
          version: v0.9.8
          name: tequila-django
 
+       - src: geerlingguy.nodejs
+         version: 4.1.2
+
+       - src: https://github.com/caktus/tequila-nodejs
+         version: v0.8.0
+         name: tequila-nodejs
+
        - src: https://github.com/caktus/tequila-rabbitmq
          version: v0.8.1
          name: tequila-rabbitmq
 
-       - src: geerlingguy.nodejs
-         version: 4.1.2
-
    Check to see what the most recent version is for each.
 
-   For needs that are not fulfilled by the (currently) five Tequila
+   For needs that are not fulfilled by the (currently) six Tequila
    roles, feel free to find an appropriate 3rd-party role on Ansible
    Galaxy rather than trying to roll your own.  We are currently
    making use of several roles created by `geerlingguy
@@ -101,12 +105,12 @@ Adding Tequila to a Django Project
    deal with later versions of Ubuntu and Debian lacking Python 2 by
    default), common.yml (a playbook for executing the tequila-common
    Ansible role), db.yml (tequila-postgresql), queue.yml
-   (tequila-rabbitmq), web.yml (tequila-nginx plus tequila-django),
-   worker.yml (tequila-django used for Celery), and site.yml (a
-   catch-all playbook that uses the include directive to pull in at
-   least the common, db, web, worker, and queue playbooks).  Other
-   playbooks should be created as needed to fill other
-   project-specific needs.  For instance, bootstrap_db.yml may be used
+   (tequila-rabbitmq), web.yml (tequila-nginx, tequila-django, and
+   tequila-nodejs), worker.yml (tequila-django used for Celery), and
+   site.yml (a catch-all playbook that uses the include directive to
+   pull in at least the common, db, web, worker, and queue playbooks).
+   Other playbooks should be created as needed to fill other
+   project-specific needs. For instance, bootstrap_db.yml may be used
    for setting up an AWS RDS database, and search.yml may be used for
    setting up Elasticsearch.
 

@@ -7,56 +7,8 @@ This repository holds the documentation for a collection of `Ansible
 to support the `Caktus Django project template
 <https://github.com/caktus/django-project-template>`_.
 
-`tequila-common <https://github.com/caktus/tequila-common>`_
-    Install common system packages, set up server users and keys, add
-    some basic security configuration, and create the standard project
-    directory structure.
-
-`tequila-nginx <https://github.com/caktus/tequila-nginx>`_
-    Install and configure `nginx <https://nginx.org/en/docs/>`_ as a
-    forwarding proxy for a Django project.
-
-`tequila-django <https://github.com/caktus/tequila-django>`_
-    Set up a Django project to run under `gunicorn
-    <http://docs.gunicorn.org/en/stable/>`_ and/or `Celery
-    <http://docs.celeryproject.org/en/latest/>`_.
-
-`tequila-nodejs <https://github.com/caktus/tequila-nodejs>`_
-    A thin wrapper around `geerlingguy/nodejs
-    <https://github.com/geerlingguy/ansible-role-nodejs>`_,
-    tequila-nodejs installs nodejs and npm, installs your project
-    dependencies, and executes your front-end build script.
-
-`tequila-postgresql <https://github.com/caktus/tequila-postgresql>`_
-    Install a `PostgreSQL <https://www.postgresql.org/>`_ server and
-    create a project database.
-
-`tequila-rabbitmq <https://github.com/caktus/tequila-rabbitmq>`_
-    Install and configure `RabbitMQ <https://www.rabbitmq.com/>`_ to
-    use as a task queue for projects that use Celery.
-
-Additionally, work is in progress on a couple more subprojects,
-
-`tequila-cli <https://github.com/caktus/tequila-cli>`_
-    A command-line Ansible wrapper that allows referencing inventories
-    and playbooks in standard locations by more compact names, and
-    allows for some actions that are difficult to do in a single
-    command with standard Ansible.
-
-`tequila-dokku <https://github.com/caktus/tequila-dokku>`_
-    A role that sets up a Django project under `Dokku
-    <http://dokku.viewdocs.io/dokku/>`_, a `Docker
-    <https://docs.docker.com/>`_ -powered Platform-as-a-Service.
-
-
-Setting Up Tequila
-------------------
-
-For projects that have not used Tequila before, check out the `project setup
-<https://github.com/caktus/tequila/blob/master/docs/project_setup.rst>`_
-documentation. This document also provides helpful hints for projects switching
-from `Margarita <https://github.com/caktus/margarita>`_.
-
+You can find more complete documentation in the
+`Caktus Developer Documentation <http://caktus.github.io/developer-documentation/tequila/tequila>`_.
 
 License
 -------
